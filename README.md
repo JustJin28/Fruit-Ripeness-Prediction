@@ -12,16 +12,27 @@ The dataset used in this project contains images of various fruits and vegetable
 ## Project Structure
 
 ├── Raw Data
+
 │   └── Fruit And Vegetable Diseases Dataset
+
 │       ├── Apple__Healthy
+
 │       ├── Apple__Rotten
+
 │       ├── …
+
 ├── src
+
 │   ├── data_loading.py
+
 │   ├── model_training.py
+
 │   ├── model_evaluation.py
+
 ├── README.md
+
 └── requirements.txt
+
 
 ## Data Augmentation
 
