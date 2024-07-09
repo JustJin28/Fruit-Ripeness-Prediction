@@ -1,76 +1,63 @@
-# Fruit and Vegetable Classification
+# Fruit Ripeness Prediction
 
-This repository contains a machine learning project for classifying healthy and rotten fruits and vegetables using a convolutional neural network (CNN). The dataset consists of labeled images and the model employs data augmentation and batch normalization for improved accuracy.
+## Overview
+This project aims to develop a machine learning model to predict the ripeness of various fruits and vegetables using image data. The dataset contains images categorized as either healthy or rotten for 14 different types of fruits and vegetables.
 
 ## Dataset
+The Fruit and Vegetable Diseases Dataset consists of 28 directories, each representing a combination of healthy and rotten images for 14 different fruits and vegetables. The images are compiled from various reputable sources, including Kaggle and GitHub repositories.
 
-The dataset used in this project contains images of various fruits and vegetables, categorized into healthy and rotten classes. The images have been resized to 224x224 pixels for consistency.
+- **Number of Classes:** 28 (Healthy and Rotten categories for 14 different fruits and vegetables)
+- **Image Format:** JPEG/PNG
+- **Image Size:** Varies (recommended to resize to a standard size for consistent training)
 
-**Note:** The raw dataset is not included in this repository due to its large size. You can download the dataset from the following link:
-[Download Dataset](https://www.kaggle.com/datasets/muhammad0subhan/fruit-and-vegetable-disease-healthy-vs-rotten)
+The dataset is available at [Kaggle](https://www.kaggle.com/datasets/muhammad0subhan/fruit-and-vegetable-disease-healthy-vs-rotten).
 
-## Project Structure
+## Current Progress
+We have implemented and tested various deep learning models to classify the images. Our initial models faced overfitting issues, which we are addressing by incorporating regularization techniques and data augmentation. We are also exploring ensemble methods to improve the model's performance and generalization.
 
-├── Raw Data
+### Implemented Models
+- **Convolutional Neural Network (CNN) with Batch Normalization and Dropout**
+- **Data Augmentation with ImageDataGenerator**
+- **Early Stopping to prevent overfitting**
+- **Class Weights to handle class imbalance**
 
-│   └── Fruit And Vegetable Diseases Dataset
+### Latest Model Performance
+- **Test Accuracy:** 79.36%
+- **Confusion Matrix and Classification Report:
+Confusion Matrix:
+[[650 712]
+ [699 869]]
 
-│       ├── Apple__Healthy
+## Ensemble Methods
+We are currently implementing ensemble methods to further enhance the model's performance:
+- **Averaging Ensemble:** Combining predictions from multiple CNN models.
+- **Stacking Ensemble:** Using a meta-model to make final predictions based on the outputs of multiple base models.
 
-│       ├── Apple__Rotten
-
-│       ├── …
-
-├── src
-
-│   ├── data_loading.py
-
-│   ├── model_training.py
-
-│   ├── model_evaluation.py
-
-├── README.md
-
-└── requirements.txt
-
-
-## Data Augmentation
-
-The project uses the `ImageDataGenerator` class from Keras for data augmentation, including:
-
-- Rotation
-- Width shift
-- Height shift
-- Shear
-- Zoom
-- Horizontal flip
-
-## Model Architecture
-
-The model is built using Keras' Sequential API and includes:
-
-- Convolutional layers with ReLU activation
-- MaxPooling layers
-- Batch Normalization
-- Dense layers with Dropout for regularization
-- Sigmoid activation for binary classification
-
-## Training
-
-The model is trained with the following parameters:
-
-- Batch size: 32
-- Epochs: 20
-- Optimizer: Adam with a learning rate of 0.0001
-- Loss function: Binary Crossentropy
-
-## Evaluation
-
-The model is evaluated on a separate test set to determine its accuracy. The project includes scripts for visualizing the training process and evaluating the model's performance.
-
-## Usage
-
+## How to Run the Project
 1. Clone the repository:
-   ```sh
+   ```bash
    git clone https://github.com/JustJin28/Fruit-Ripeness-Prediction.git
-   cd fruit-vegetable-classification
+   
+   Navigate to the project directory
+   cd Fruit-Ripeness-Prediction
+   
+   Install the required dependencies
+   pip install -r requirements.txt
+   
+   Download the dataset from Kaggle and place it in the Raw Data directory.
+   
+   Future Work
+
+    Implementing ensemble methods to enhance model performance.
+    Exploring other model architectures and hyperparameters to improve accuracy and generalization.
+    Fine-tuning the data augmentation techniques for better training data variability.
+
+Contributing
+
+Feel free to fork the repository, make improvements, and submit a pull request. Your contributions are welcome!
+
+License
+
+This project is licensed under the MIT License.
+   
+
