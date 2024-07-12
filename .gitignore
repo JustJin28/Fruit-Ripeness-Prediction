@@ -1,2 +1,8 @@
 # Ignore raw data
 Raw Data/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+.idea/
+*.keras
