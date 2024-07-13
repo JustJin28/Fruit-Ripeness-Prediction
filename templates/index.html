@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit Ripeness Prediction</title>
+</head>
+<body>
+    <h1>Fruit Ripeness Prediction</h1>
+    <p>Take a photo of your fruit to see if it is healthy or rotten.</p>
+    <input type="file" accept="image/*" capture="camera" id="cameraInput">
+    <button onclick="uploadPhoto()">Upload Photo</button>
+
+    <script>
+        function uploadPhoto() {
+            const input = document.getElementById('cameraInput');
+            if (input.files.length > 0) {
+                const formData = new FormData();
+                formData.append('file', input.files[0]);
+
+                fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Prediction: ' + (data.prediction === 0 ? 'Healthy' : 'Rotten'));
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            } else {
+                alert('Please take a photo first.');
+            }
+        }
+    </script>
+</body>
+</html>
