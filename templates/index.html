@@ -4,19 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fruit Ripeness Prediction</title>
+    <style>
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #video {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #controls {
+            position: relative;
+            top: 500px;  /* Adjust this value if necessary */
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Fruit Ripeness Prediction</h1>
-    <p>Take a photo of your fruit to see if it is healthy or rotten.</p>
-    <input type="file" accept="image/*" capture="camera" id="cameraInput">
-    <button onclick="uploadPhoto()">Upload Photo</button>
+    <p>Real-time ripeness detection using your camera.</p>
+
+    <!-- Video element for camera feed -->
+    <video id="video" width="640" height="480" autoplay></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <!-- Control elements for uploading photo -->
+    <div id="controls">
+        <input type="file" id="fileInput" accept="image/*" />
+        <button onclick="uploadPhoto()">Upload Photo</button>
+    </div>
 
     <script>
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+        let streaming = false;
+        let currentPrediction = null;  // Store the current prediction
+
+        function openCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                    video.play();
+                    streaming = true;
+                    processVideoFrame();
+                })
+                .catch(err => {
+                    console.error("Error accessing camera: " + err);
+                });
+        }
+
+        function processVideoFrame() {
+            if (streaming) {
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                let frame = canvas.toDataURL('image/jpeg');
+
+                fetch(frame)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const formData = new FormData();
+                        formData.append('file', blob, 'frame.jpg');
+
+                        fetch('/predict', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.prediction !== currentPrediction) {
+                                currentPrediction = data.prediction;  // Update only if the prediction changes
+                            }
+                            displayPrediction(currentPrediction);
+                            setTimeout(processVideoFrame, 200); // Adjust the delay for real-time performance
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            setTimeout(processVideoFrame, 200);
+                        });
+                    });
+            }
+        }
+
+        function displayPrediction(prediction) {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            context.font = '20px Arial';
+            context.fillStyle = 'red';
+            context.fillText(prediction === 0 ? 'Healthy' : 'Rotten', 10, 50);
+        }
+
         function uploadPhoto() {
-            const input = document.getElementById('cameraInput');
-            if (input.files.length > 0) {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
                 const formData = new FormData();
-                formData.append('file', input.files[0]);
+                formData.append('file', file);
 
                 fetch('/predict', {
                     method: 'POST',
@@ -30,9 +114,11 @@
                     console.error('Error:', error);
                 });
             } else {
-                alert('Please take a photo first.');
+                alert('Please select a file to upload.');
             }
         }
+
+        openCamera();
     </script>
 </body>
 </html>

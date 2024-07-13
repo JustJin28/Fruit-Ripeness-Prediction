@@ -4,6 +4,11 @@
 
 This project aims to develop a machine learning model to predict the ripeness of various fruits and vegetables using image data. The dataset contains images categorized as either healthy or rotten for 14 different types of fruits and vegetables.
 
+## Demo
+
+[Watch the demo video](Media/demo.mov)
+
+
 ## Dataset
 
 The Fruit and Vegetable Diseases Dataset consists of 28 directories, each representing a combination of healthy and rotten images for 14 different fruits and vegetables. The images are compiled from various reputable sources, including Kaggle and GitHub repositories.
